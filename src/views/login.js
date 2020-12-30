@@ -63,7 +63,7 @@ class Login extends React.Component{
                                                 onChange={e=>this.setState({senha:e.target.value})}
                                                 className="form-control" 
                                                 id="exampleInputPassword1" 
-                                                placeholder="Digite a enha"/>
+                                                placeholder="Digite a senha"/>
                                         </FormGroup>
 
                                         <button onClick={this.entrar} className="btn btn-success">Entrar</button>
