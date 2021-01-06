@@ -32,7 +32,7 @@ class ConsultaLancamentos extends React.Component{
     }
 
     editar = (id) => {
-        console.log('editando lançamento ',id)
+        this.props.history.push(`/cadastro-lancamentos/${id}`)
     }
 
     abrirConfirmacao = (lancamento) => {
@@ -81,6 +81,10 @@ class ConsultaLancamentos extends React.Component{
         })
     }
 
+    preparaFormularioCadastro= () => {
+        this.props.history.push('/cadastro-lancamentos')
+    }
+
     render(){
         const meses = this.service.obterListaMeses()
         const tipos = this.service.obterListaTipos();
@@ -122,7 +126,7 @@ class ConsultaLancamentos extends React.Component{
                             </FormGroup>
 
                             <button type="button" className="btn btn-success" onClick={this.buscar}>Buscar</button>
-                            <button type="button" className="btn btn-danger">Cadastrar</button>
+                            <button onClick={this.preparaFormularioCadastro} type="button" className="btn btn-danger">Cadastrar</button>
                         </div>
                     </div>
                 </div>

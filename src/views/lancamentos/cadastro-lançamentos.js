@@ -20,6 +20,7 @@ class CadastroLancamentos extends React.Component{
         ano         : '',
         tipo        : '',
         status      : '',
+        usuario     : null,
     }
 
     constructor(){
@@ -33,8 +34,22 @@ class CadastroLancamentos extends React.Component{
 
         this.setState({ [name] : value })
     }
+
+    componentDidMount(){
+        const params = this.props.match.params
+
+        if(params.id){
+            this.service.obterPorId(params.id)
+            .then(response => { 
+                this.setState({...response.data})
+            })
+            .catch( error => {
+                messages.mensagemErro(error.response.data)
+            })
+        }
+    }
+
     submit = () => {
-        
 
         const usuarioLogado = LocalStorageService.obterItem('_usuarioLogado')
 
@@ -49,7 +64,30 @@ class CadastroLancamentos extends React.Component{
         }
         
         this.service.salvar(lancamento).then(response => {
+            this.props.history.push('/consulta-lancamentos')
             messages.mensagemSucesso('Lançamento salvo com sucesso!')
+        }).catch(erro =>{
+            messages.mensagemErro(erro.response.data)
+        })
+    }
+
+    atualizar = () => {
+
+        const { descricao, valor, mes, ano, tipo, status, id, usuario } = this.state
+        const lancamento = {
+            descricao,
+            valor,
+            mes,
+            ano,
+            tipo,
+            id,
+            usuario,
+            status
+        }
+        
+        this.service.atualizar(lancamento).then(response => {
+            this.props.history.push('/consulta-lancamentos')
+            messages.mensagemSucesso('Lançamento atualizado com sucesso!')
         }).catch(erro =>{
             messages.mensagemErro(erro.response.data)
         })
@@ -103,7 +141,8 @@ class CadastroLancamentos extends React.Component{
                 <div className='row'>
                     <div className="col-md-6">
                         <button className="btn btn-success" onClick={this.submit}>Salvar</button>
-                        <button className="btn btn-danger">Cancelar</button>
+                        <button className="btn btn-primary" onClick={this.atualizar}>Atualizar</button>
+                        <button onClick={ e=> this.props.history.push('/consulta-lancamentos')} className="btn btn-danger">Cancelar</button>
                     </div>
                 </div>
             </Card>
