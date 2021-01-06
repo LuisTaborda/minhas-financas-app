@@ -1,5 +1,7 @@
+/* eslint-disable import/no-anonymous-default-export */
 import React from 'react'
 import currencyFormatter from 'currency-formatter'
+
 export default props => {
 
     const rows = props.lancamentos.map( lancamento => {
@@ -11,8 +13,25 @@ export default props => {
                 <td>{lancamento.mes}</td>
                 <td>{lancamento.status}</td>
                 <td>
-                    <button type="button" className="btn btn-primary" onClick={e => props.editAction(lancamento.id)}>Editar</button>
-                    <button type="button" className="btn btn-danger" onClick={e => props.deleteAction(lancamento)}>Deletar</button>
+
+                    <button onClick={e => props.alterarStatus(lancamento, "EFETIVADO")}
+                            disabled={lancamento.status !== 'PENDENTE'}
+                            type="button" className="btn btn-success" title="Efetivar">
+                            <i className="pi pi-check"/>
+                    </button>
+
+                    <button onClick={e => props.alterarStatus(lancamento, "CANCELADO")} 
+                            disabled={lancamento.status !== 'PENDENTE'}
+                            type="button" className="btn btn-warning" title="Cancelar">
+                            <i className="pi pi-times"/>
+                    </button>
+                    
+                    <button type="button" className="btn btn-primary" onClick={e => props.editAction(lancamento.id)} title="Editar">
+                            <i className="pi pi-pencil"/>
+                    </button>
+                    <button type="button" className="btn btn-danger" onClick={e => props.deleteAction(lancamento)} title="Excluir">
+                            <i className="pi pi-trash"/>
+                    </button>
                 </td>
             </tr>
         )
