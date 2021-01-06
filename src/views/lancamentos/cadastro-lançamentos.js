@@ -6,7 +6,9 @@ import FormGroup from '../../components/form-group'
 import {withRouter} from 'react-router-dom'
 import SelectMenu from '../../components/selectMenu'
 
+import LocalStorageService from '../../app/services/localStorageService'
 import LancamentoService from '../../app/services/lancamentoService'
+import * as messages from '../../components/toastr'
 
 class CadastroLancamentos extends React.Component{
 
@@ -25,15 +27,32 @@ class CadastroLancamentos extends React.Component{
         this.service = new LancamentoService()
     }
 
-    handleChange = (event) =>{
-        const value = event.target.value
-        const name = event.target.name
+    handleChange = (event) => {
+        const value = event.target.value;
+        const name = event.target.name;
 
-        this.setState({[name] : [value]})
+        this.setState({ [name] : value })
     }
-
     submit = () => {
-        console.log(this.state)
+        
+
+        const usuarioLogado = LocalStorageService.obterItem('_usuarioLogado')
+
+        const { descricao, valor, mes, ano, tipo } = this.state
+        const lancamento = {
+            descricao,
+            valor,
+            mes,
+            ano,
+            tipo,
+            usuario : usuarioLogado.id
+        }
+        
+        this.service.salvar(lancamento).then(response => {
+            messages.mensagemSucesso('Lançamento salvo com sucesso!')
+        }).catch(erro =>{
+            messages.mensagemErro(erro.response.data)
+        })
     }
 
     render(){
