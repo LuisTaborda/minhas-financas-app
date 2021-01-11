@@ -117,7 +117,7 @@ class ConsultaLancamentos extends React.Component{
     
 
         return(
-            <Card title="Consula Lançamento">
+            <Card title="Consulta Lançamento">
                 <div className="row">
                     <div className="col-md-6">
                         <div className="bs-component">
